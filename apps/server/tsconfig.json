@@ -15,6 +15,7 @@
     "strictBindCallApply": false,
     "strict": true,
     "importHelpers": true,
+    "strictPropertyInitialization": false,
     "paths": {
       "@generated/*": ["src/@generated/*"]
     }

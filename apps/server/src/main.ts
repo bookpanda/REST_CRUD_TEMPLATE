@@ -1,3 +1,4 @@
+import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import {
   FastifyAdapter,
@@ -15,11 +16,12 @@ async function bootstrap() {
   );
 
   app.enableCors();
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   await app.listen(PORT);
   console.log(
     `Application is running on port ${PORT}
-Localhost endpoint => http://localhost:${PORT}/graphql
+Localhost endpoint => http://localhost:${PORT}
 Apollo Studio => https://studio.apollographql.com/sandbox/explorer`
   );
 }
