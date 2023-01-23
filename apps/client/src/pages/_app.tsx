@@ -15,11 +15,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Turbo Next Nest GraphQL Prisma</title>
-        <meta
-          content="My personal stack for production app"
-          name="description"
-        />
+        <title>REST Template</title>
+        <meta content="REST Template" name="description" />
       </Head>
 
       <ApolloProvider client={client}>
