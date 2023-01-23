@@ -17,7 +17,8 @@
     "importHelpers": true,
     "strictPropertyInitialization": false,
     "paths": {
-      "@generated/*": ["src/@generated/*"]
+      "@generated/*": ["src/@generated/*"],
+      "$src/*": ["src/*"]
     }
   }
 }

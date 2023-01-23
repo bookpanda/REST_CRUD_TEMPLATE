@@ -30,7 +30,9 @@ export class AuthService {
         hash,
       },
     });
-    return this.signTokens(user.id, user.email);
+    const tokens = await this.signTokens(user.id, user.email);
+    await this.updateRtHash(user.id, tokens.refresh_token);
+    return tokens;
   }
 
   async signin(dto: SignInDto) {
@@ -43,10 +45,25 @@ export class AuthService {
     const pwMatches = await argon.verify(user.hash, dto.password);
     if (!pwMatches) throw new ForbiddenException("Credentials Incorrect");
 
-    return this.signTokens(user.id, user.email);
+    const tokens = await this.signTokens(user.id, user.email);
+    await this.updateRtHash(user.id, tokens.refresh_token);
+    return tokens;
   }
 
-  async signTokens(userId: string, email: string) {
+  async logout(userId: string) {
+    await this.prisma.user.updateMany({
+      where: { id: userId, hashedRt: { not: null } },
+      data: { hashedRt: null },
+    });
+  }
+
+  async signTokens(
+    userId: string,
+    email: string
+  ): Promise<{
+    access_token: string;
+    refresh_token: string;
+  }> {
     const payload = { sub: userId, email };
     const atSecret = this.config.get("JWT_AT_SECRET");
     const rtSecret = this.config.get("JWT_RT_SECRET");
@@ -61,5 +78,14 @@ export class AuthService {
       }),
     ]);
     return { access_token: at, refresh_token: rt };
+  }
+
+  async updateRtHash(userId: string, rt: string) {
+    const hash = await argon.hash(rt);
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { hashedRt: hash },
+    });
   }
 }
