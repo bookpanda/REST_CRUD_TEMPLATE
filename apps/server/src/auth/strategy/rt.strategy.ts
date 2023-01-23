@@ -11,11 +11,12 @@ export class RtStrategy extends PassportStrategy(Strategy, "jwt-refresh") {
   constructor(config: ConfigService, private prisma: PrismaService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: config.get("JWT_AT_SECRET"),
+      secretOrKey: config.get("JWT_RT_SECRET"),
+      passReqToCallback: true,
     });
   }
   validate(req: Request, payload: { sub: string; email: string }) {
-    const refreshToken = req.get("authorization")?.replace("Bearer", "").trim();
+    const refreshToken = req.get("Authorization")?.replace("Bearer", "").trim();
     return { ...payload, refreshToken };
   }
 }

@@ -10,7 +10,7 @@ import {
 import { AuthService } from "./auth.service";
 import { GetUser } from "./decorator";
 import { SignInDto, SignUpDto } from "./dto";
-import { AtGuard } from "./guards";
+import { AtGuard, RtGuard } from "./guards";
 
 @Controller("auth")
 export class AuthController {
@@ -32,5 +32,15 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   logout(@GetUser("sub") userId: string) {
     return this.authService.logout(userId);
+  }
+
+  @UseGuards(RtGuard)
+  @Post("refresh")
+  @HttpCode(HttpStatus.OK)
+  refreshTokens(
+    @GetUser("sub") userId: string,
+    @GetUser("refreshToken") refreshToken: string
+  ) {
+    return this.authService.refreshTokens(userId, refreshToken);
   }
 }
