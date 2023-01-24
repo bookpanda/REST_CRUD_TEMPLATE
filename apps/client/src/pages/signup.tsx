@@ -3,7 +3,7 @@ import { Container } from "@mui/material";
 import { MyPage } from "$core/@types";
 import { SignUp } from "$modules/SignUp";
 
-const IndexPage: MyPage = () => {
+const SignUpPage: MyPage = () => {
   return (
     <Container className="flex h-screen flex-col items-center bg-gray-100">
       <SignUp />
@@ -11,4 +11,4 @@ const IndexPage: MyPage = () => {
   );
 };
 
-export default IndexPage;
+export default SignUpPage;
