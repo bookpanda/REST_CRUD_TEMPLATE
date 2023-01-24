@@ -5,6 +5,7 @@ import { ApolloProvider } from "@apollo/client";
 
 import { createApolloClient } from "@org/apollo";
 
+import { AppProvider } from "$core/contexts/appProvider";
 import "$styles/global.scss";
 
 const client = createApolloClient(
@@ -20,7 +21,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
 
       <ApolloProvider client={client}>
-        <Component {...pageProps} />
+        <AppProvider>
+          <Component {...pageProps} />
+        </AppProvider>
       </ApolloProvider>
     </>
   );
