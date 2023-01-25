@@ -27,7 +27,6 @@ export async function signUp({
       passwordConfirm,
     }),
   };
-  console.log(`fetching`);
   return await fetch(url, options)
     .then(handleResponse)
     .then(handleData)

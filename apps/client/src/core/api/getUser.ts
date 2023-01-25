@@ -1,22 +1,21 @@
-import { TokenType } from "$core/contexts/appContext";
+import { parseCookies } from "nookies";
 
-export type SignInType = {
-  email: string;
-  password: string;
+export type UserType = {
+  id: "";
+  username: "";
+  email: "";
 };
 
-export async function signIn({ email, password }: SignInType) {
-  const url = "http://localhost:4201/auth/signin";
+export async function getUser() {
+  const cookies = parseCookies();
+  const url = "http://localhost:4201/user";
   const options = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${cookies["access_token"]}`,
       Accept: "application/json",
     },
-    body: JSON.stringify({
-      email,
-      password,
-    }),
   };
   return await fetch(url, options)
     .then(handleResponse)
@@ -28,7 +27,7 @@ export async function signIn({ email, password }: SignInType) {
       return response.ok ? Promise.resolve(json) : Promise.reject(json);
     });
   }
-  function handleData(data: TokenType) {
+  function handleData(data: UserType) {
     return data;
   }
 

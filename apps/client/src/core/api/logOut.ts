@@ -13,7 +13,6 @@ export async function logOut() {
       Accept: "application/json",
     },
   };
-  console.log(`fetching`);
   return await fetch(url, options)
     .then(handleResponse)
     .then(handleData)

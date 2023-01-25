@@ -14,28 +14,19 @@ export type TokenType = {
 };
 
 interface IAppContext {
-  auth: { id: string; username: string; email: string };
-  token: { access_token: string; refresh_token: string };
-  setAuth: (input: AuthType) => void;
+  auth: { id: string; username: string; email: string } | undefined;
   signin: (input: SignInType) => void;
   signup: (input: SignUpType) => void;
   logout: () => void;
+  getuser: () => void;
 }
 
 export const initState = {
-  auth: {
-    id: "",
-    username: "",
-    email: "",
-  },
-  token: {
-    access_token: "",
-    refresh_token: "",
-  },
-  setAuth: () => null,
+  auth: undefined,
   signin: () => null,
   signup: () => null,
   logout: () => null,
+  getuser: () => null,
 };
 
 export const AppContext = createContext<IAppContext>(initState);
