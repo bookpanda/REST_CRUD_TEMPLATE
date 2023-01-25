@@ -1,12 +1,19 @@
 import { TokenType } from "$core/contexts/appContext";
 
-export type SignInType = {
+export type SignUpType = {
+  username: string;
   email: string;
   password: string;
+  passwordConfirm: string;
 };
 
-export async function signIn({ email, password }: SignInType) {
-  const url = "http://localhost:4201/auth/signin";
+export async function signUp({
+  email,
+  password,
+  passwordConfirm,
+  username,
+}: SignUpType) {
+  const url = "http://localhost:4201/auth/signup";
   const options = {
     method: "POST",
     headers: {
@@ -14,8 +21,10 @@ export async function signIn({ email, password }: SignInType) {
       Accept: "application/json",
     },
     body: JSON.stringify({
+      username,
       email,
       password,
+      passwordConfirm,
     }),
   };
   console.log(`fetching`);

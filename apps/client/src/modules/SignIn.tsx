@@ -5,15 +5,15 @@ import Link from "next/link";
 import KeyboardArrowLeftIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 
+import { SignInType } from "$core/api";
 import { useAppContext } from "$core/contexts";
 
 export const SignIn: FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const appContext = useAppContext();
-  const { auth, signin } = appContext;
-  const handleSignin = () => {
-    signin({ email, password });
+  const { signin } = appContext;
+  const [data, setData] = useState<SignInType>({ email: "", password: "" });
+  const handleChange = (field: string, value: string) => {
+    setData({ ...data, [field]: value });
   };
   return (
     <>
@@ -36,24 +36,24 @@ export const SignIn: FC = () => {
             id="outlined-basic"
             label="Email"
             name="email"
-            value={email}
+            value={data.email}
             variant="outlined"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => handleChange("email", e.target.value)}
           />
           <TextField
             className="w-full"
             id="outlined-basic"
             label="Password"
             name="password"
-            value={password}
+            value={data.password}
             variant="outlined"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => handleChange("password", e.target.value)}
           />
           <Button
             className="w-full"
             color="primary"
             variant="outlined"
-            onClick={() => handleSignin()}
+            onClick={() => signin(data)}
           >
             Log In
           </Button>

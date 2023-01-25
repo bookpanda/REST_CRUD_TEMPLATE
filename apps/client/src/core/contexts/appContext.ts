@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-import { SignInType } from "$core/api";
+import { SignInType, SignUpType } from "$core/api";
 
 export type AuthType = {
   id: string;
@@ -18,6 +18,7 @@ interface IAppContext {
   token: { access_token: string; refresh_token: string };
   setAuth: (input: AuthType) => void;
   signin: (input: SignInType) => void;
+  signup: (input: SignUpType) => void;
 }
 
 export const initState = {
@@ -32,6 +33,7 @@ export const initState = {
   },
   setAuth: () => null,
   signin: () => null,
+  signup: () => null,
 };
 
 export const AppContext = createContext<IAppContext>(initState);

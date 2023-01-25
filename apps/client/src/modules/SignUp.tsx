@@ -1,11 +1,25 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 import Link from "next/link";
 
 import KeyboardArrowLeftIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 
+import { SignUpType } from "$core/api";
+import { useAppContext } from "$core/contexts";
+
 export const SignUp: FC = () => {
+  const appContext = useAppContext();
+  const { signup } = appContext;
+  const [data, setData] = useState<SignUpType>({
+    username: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+  });
+  const handleChange = (field: string, value: string) => {
+    setData({ ...data, [field]: value });
+  };
   return (
     <>
       <Box>
@@ -26,27 +40,44 @@ export const SignUp: FC = () => {
             className="w-full"
             id="outlined-basic"
             label="Username"
+            name="username"
+            value={data.username}
             variant="outlined"
+            onChange={(e) => handleChange("username", e.target.value)}
           />
           <TextField
             className="w-full"
             id="outlined-basic"
             label="Email"
+            name="email"
+            value={data.email}
             variant="outlined"
+            onChange={(e) => handleChange("email", e.target.value)}
           />
           <TextField
             className="w-full"
             id="outlined-basic"
             label="Password"
+            name="password"
+            value={data.password}
             variant="outlined"
+            onChange={(e) => handleChange("password", e.target.value)}
           />
           <TextField
             className="w-full"
             id="outlined-basic"
             label="Confirm Password"
+            name="passwordConfirm"
+            value={data.passwordConfirm}
             variant="outlined"
+            onChange={(e) => handleChange("passwordConfirm", e.target.value)}
           />
-          <Button className="w-full" color="primary" variant="outlined">
+          <Button
+            className="w-full"
+            color="primary"
+            variant="outlined"
+            onClick={() => signup(data)}
+          >
             Register
           </Button>
           <Typography component="p" variant="body1">

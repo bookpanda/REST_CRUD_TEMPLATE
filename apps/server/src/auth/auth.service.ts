@@ -22,6 +22,9 @@ export class AuthService {
     });
     if (checkEmail) throw new ForbiddenException("Email taken");
 
+    if (dto.password !== dto.passwordConfirm)
+      throw new ForbiddenException("Passwords do not match");
+
     const hash = await argon.hash(dto.password);
     const user = await this.prisma.user.create({
       data: {
