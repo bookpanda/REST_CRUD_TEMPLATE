@@ -1,6 +1,8 @@
 import { FC, PropsWithChildren, useState } from "react";
 
-import { SignInType, SignUpType, signIn, signUp } from "$core/api";
+import { parseCookies, setCookie } from "nookies";
+
+import { SignInType, SignUpType, logOut, signIn, signUp } from "$core/api";
 
 import { AppContext, AuthType, TokenType } from "./appContext";
 
@@ -21,8 +23,10 @@ export const AppProvider: FC<PropsWithChildren> = ({ children }) => {
     username,
   }: SignUpType) => {
     const data = await signUp({ username, email, password, passwordConfirm });
-    if ((data as TokenType).access_token !== undefined) {
+    const tokens = data as TokenType;
+    if (tokens.access_token !== undefined) {
       setToken(data as TokenType);
+      createCookies(tokens);
       console.log(token);
     } else {
       console.log(data);
@@ -30,15 +34,31 @@ export const AppProvider: FC<PropsWithChildren> = ({ children }) => {
   };
   const signin = async ({ email, password }: SignInType) => {
     const data = await signIn({ email, password });
-    if ((data as TokenType).access_token !== undefined) {
+    const tokens = data as TokenType;
+    if (tokens.access_token !== undefined) {
       setToken(data as TokenType);
-      console.log(token);
+      createCookies(tokens);
+      const cookies = parseCookies();
+      console.log(cookies);
     } else {
       console.log(data);
     }
   };
+  const logout = async () => {
+    await logOut();
+  };
+  const createCookies = (tokens: TokenType) => {
+    setCookie(null, "access_token", tokens.access_token, {
+      maxAge: 30 * 24 * 60 * 60,
+    });
+    setCookie(null, "refresh_token", tokens.refresh_token, {
+      maxAge: 30 * 24 * 60 * 60,
+    });
+  };
   return (
-    <AppContext.Provider value={{ auth, token, setAuth, signin, signup }}>
+    <AppContext.Provider
+      value={{ auth, token, setAuth, signin, signup, logout }}
+    >
       {children}
     </AppContext.Provider>
   );

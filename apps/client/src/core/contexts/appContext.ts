@@ -19,6 +19,7 @@ interface IAppContext {
   setAuth: (input: AuthType) => void;
   signin: (input: SignInType) => void;
   signup: (input: SignUpType) => void;
+  logout: () => void;
 }
 
 export const initState = {
@@ -34,6 +35,7 @@ export const initState = {
   setAuth: () => null,
   signin: () => null,
   signup: () => null,
+  logout: () => null,
 };
 
 export const AppContext = createContext<IAppContext>(initState);
